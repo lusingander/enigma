@@ -73,13 +73,46 @@ func TestM3(t *testing.T) {
 	}
 }
 
+func TestM3_long(t *testing.T) {
+	if testing.Short() {
+		t.Skip()
+	}
+
+	rs := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	s := strings.Repeat(rs, 10000)
+
+	e1 := NewM3(
+		[3]Rotor{
+			NewRotor1('A', 'A'),
+			NewRotor2('A', 'A'),
+			NewRotor3('A', 'A'),
+		},
+		NewReflectorB(),
+	)
+	e2 := NewM3(
+		[3]Rotor{
+			NewRotor1('A', 'A'),
+			NewRotor2('A', 'A'),
+			NewRotor3('A', 'A'),
+		},
+		NewReflectorB(),
+	)
+
+	encoded := e1.EncodeString(s)
+	decoded := e2.EncodeString(encoded)
+
+	if s != decoded {
+		t.Errorf("s=%s, encoded=%s, decoded=%s", s, encoded, decoded)
+	}
+}
+
 func TestM3_pos(t *testing.T) {
 	if testing.Short() {
 		t.Skip()
 	}
 
 	rs := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	s := strings.Repeat(rs, 100)
+	s := strings.Repeat(rs, 10)
 
 	for _, r1 := range rs {
 		for _, r2 := range rs {
@@ -123,7 +156,7 @@ func TestM3_ring(t *testing.T) {
 	}
 
 	rs := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	s := strings.Repeat(rs, 100)
+	s := strings.Repeat(rs, 10)
 
 	for _, r1 := range rs {
 		for _, r2 := range rs {
