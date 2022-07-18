@@ -1,6 +1,7 @@
 package enigma
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -69,5 +70,93 @@ func TestM3(t *testing.T) {
 		if got != test.want {
 			t.Errorf("got=%s, want=%s", got, test.want)
 		}
+	}
+}
+
+func TestM3_pos(t *testing.T) {
+	if testing.Short() {
+		t.Skip()
+	}
+
+	rs := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	s := strings.Repeat(rs, 100)
+
+	for _, r1 := range rs {
+		for _, r2 := range rs {
+			for _, r3 := range rs {
+				testPos(r1, r2, r3, s, t)
+			}
+		}
+	}
+}
+
+func testPos(r1, r2, r3 rune, s string, t *testing.T) {
+	e1 := NewM3(
+		[3]Rotor{
+			NewRotor1(r1, 'A'),
+			NewRotor2(r2, 'A'),
+			NewRotor3(r3, 'A'),
+		},
+		NewReflectorB(),
+	)
+	e2 := NewM3(
+		[3]Rotor{
+			NewRotor1(r1, 'A'),
+			NewRotor2(r2, 'A'),
+			NewRotor3(r3, 'A'),
+		},
+		NewReflectorB(),
+	)
+
+	encoded := e1.EncodeString(s)
+	decoded := e2.EncodeString(encoded)
+
+	if s != decoded {
+		t.Errorf("s=%s, encoded=%s, decoded=%s, pos=(%s, %s, %s)",
+			s, encoded, decoded, string(r1), string(r2), string(r3))
+	}
+}
+
+func TestM3_ring(t *testing.T) {
+	if testing.Short() {
+		t.Skip()
+	}
+
+	rs := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	s := strings.Repeat(rs, 100)
+
+	for _, r1 := range rs {
+		for _, r2 := range rs {
+			for _, r3 := range rs {
+				testRing(r1, r2, r3, s, t)
+			}
+		}
+	}
+}
+
+func testRing(r1, r2, r3 rune, s string, t *testing.T) {
+	e1 := NewM3(
+		[3]Rotor{
+			NewRotor1('A', r1),
+			NewRotor2('A', r2),
+			NewRotor3('A', r3),
+		},
+		NewReflectorB(),
+	)
+	e2 := NewM3(
+		[3]Rotor{
+			NewRotor1('A', r1),
+			NewRotor2('A', r2),
+			NewRotor3('A', r3),
+		},
+		NewReflectorB(),
+	)
+
+	encoded := e1.EncodeString(s)
+	decoded := e2.EncodeString(encoded)
+
+	if s != decoded {
+		t.Errorf("s=%s, encoded=%s, decoded=%s, ring=(%s, %s, %s)",
+			s, encoded, decoded, string(r1), string(r2), string(r3))
 	}
 }
