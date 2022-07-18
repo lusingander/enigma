@@ -12,14 +12,6 @@ func buildMap(w string) idxMap {
 	return m
 }
 
-func invertMap(m idxMap) idxMap {
-	n := make(idxMap)
-	for k, v := range m {
-		n[v] = k
-	}
-	return n
-}
-
 func toIdx(r rune) idx {
 	return idx(r - 'A')
 }

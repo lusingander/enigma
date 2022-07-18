@@ -65,32 +65,39 @@ type rotor struct {
 	pos     idx
 	ring    idx
 	notchSet
+
+	wiring string
 }
 
-func newRotor(pos, ring rune, w, n string) Rotor {
-	rIdxMap := buildMap(w)
-	lIdxMap := invertMap(rIdxMap)
-	return &rotor{
-		rIdxMap:  rIdxMap,
-		lIdxMap:  lIdxMap,
+func newRotor(pos, ring rune, wiring, notch string) Rotor {
+	rotor := &rotor{
+		rIdxMap:  make(idxMap),
+		lIdxMap:  make(idxMap),
 		pos:      toIdx(pos),
 		ring:     toIdx(ring),
-		notchSet: newNotchSet(n),
+		notchSet: newNotchSet(notch),
+		wiring:   wiring,
+	}
+	rotor.updateIdxMap()
+	return rotor
+}
+
+func (w *rotor) updateIdxMap() {
+	for i, r := range w.wiring {
+		idx := mod26(idx(i) - w.pos + w.ring)
+		w.rIdxMap[idx] = mod26(toIdx(r) - w.pos + w.ring)
+	}
+	for k, v := range w.rIdxMap {
+		w.lIdxMap[v] = k
 	}
 }
 
 func (w rotor) substituteRtoL(i idx) idx {
-	i = mod26(i + w.pos - w.ring)
-	i = w.rIdxMap[i]
-	i = mod26(i - w.pos + w.ring)
-	return i
+	return w.rIdxMap[i]
 }
 
 func (w rotor) substituteLtoR(i idx) idx {
-	i = mod26(i + w.pos - w.ring)
-	i = w.lIdxMap[i]
-	i = mod26(i - w.pos + w.ring)
-	return i
+	return w.lIdxMap[i]
 }
 
 func (w rotor) turnover() bool {
@@ -100,6 +107,7 @@ func (w rotor) turnover() bool {
 
 func (w *rotor) step() {
 	w.pos = mod26(w.pos + 1)
+	w.updateIdxMap()
 }
 
 type notchSet map[idx]any
