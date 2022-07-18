@@ -5,6 +5,7 @@ const (
 	reflectorC_Wiring = "FVPJIAOYEDRZXWGCTKUQSBNMHL"
 )
 
+// Reflector (Umkehrwalze)
 type Reflector interface {
 	substitute(idx) idx
 }

@@ -5,11 +5,11 @@ type Enigma interface {
 	EncodeString(string) string
 }
 
-func NewM3(rotors [3]Rotor, reflector Reflector) Enigma {
+func NewM3(rotors [3]Rotor, reflector Reflector, plugboard Plugboard) Enigma {
 	return &M3{
 		rotors:    rotors,
 		reflector: reflector,
-		plugboard: nil,
+		plugboard: plugboard,
 	}
 }
 
@@ -31,6 +31,7 @@ func (e *M3) EncodeRune(r rune) rune {
 
 	i := toIdx(r)
 
+	i = e.plugboard.substitute(i)
 	i = e.rotors[0].substituteRtoL(i)
 	i = e.rotors[1].substituteRtoL(i)
 	i = e.rotors[2].substituteRtoL(i)
@@ -38,6 +39,7 @@ func (e *M3) EncodeRune(r rune) rune {
 	i = e.rotors[2].substituteLtoR(i)
 	i = e.rotors[1].substituteLtoR(i)
 	i = e.rotors[0].substituteLtoR(i)
+	i = e.plugboard.substitute(i)
 
 	return toRune(i)
 }

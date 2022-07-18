@@ -20,6 +20,7 @@ const (
 	rotor8_Notch = "ZM"
 )
 
+// Rotor (Walzen)
 type Rotor interface {
 	substituteRtoL(idx) idx
 	substituteLtoR(idx) idx
