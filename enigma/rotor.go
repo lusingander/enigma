@@ -80,16 +80,16 @@ func newRotor(pos, ring rune, w, n string) Rotor {
 }
 
 func (w rotor) substituteRtoL(i idx) idx {
-	i = (((i + w.pos - w.ring) % 26) + 26) % 26
+	i = mod26(i + w.pos - w.ring)
 	i = w.rIdxMap[i]
-	i = (((i - w.pos + w.ring) % 26) + 26) % 26
+	i = mod26(i - w.pos + w.ring)
 	return i
 }
 
 func (w rotor) substituteLtoR(i idx) idx {
-	i = (((i + w.pos - w.ring) % 26) + 26) % 26
+	i = mod26(i + w.pos - w.ring)
 	i = w.lIdxMap[i]
-	i = (((i - w.pos + w.ring) % 26) + 26) % 26
+	i = mod26(i - w.pos + w.ring)
 	return i
 }
 
@@ -99,7 +99,7 @@ func (w rotor) turnover() bool {
 }
 
 func (w *rotor) step() {
-	w.pos = (w.pos + 1) % 26
+	w.pos = mod26(w.pos + 1)
 }
 
 type notchSet map[idx]any

@@ -27,3 +27,7 @@ func toIdx(r rune) idx {
 func toRune(i idx) rune {
 	return rune(i + 'A')
 }
+
+func mod26(i idx) idx {
+	return ((i % 26) + 26) % 26
+}
