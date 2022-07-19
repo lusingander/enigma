@@ -102,24 +102,19 @@ func TestM3_long(t *testing.T) {
 	rs := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	s := strings.Repeat(rs, 10000)
 
-	e1 := NewM3(
-		[3]Rotor{
-			NewRotor1('A', 'A'),
-			NewRotor2('A', 'A'),
-			NewRotor3('A', 'A'),
-		},
-		NewReflectorB(),
-		NewPlugboard(),
-	)
-	e2 := NewM3(
-		[3]Rotor{
-			NewRotor1('A', 'A'),
-			NewRotor2('A', 'A'),
-			NewRotor3('A', 'A'),
-		},
-		NewReflectorB(),
-		NewPlugboard(),
-	)
+	newM3 := func() Enigma {
+		return NewM3(
+			[3]Rotor{
+				NewRotor1('A', 'A'),
+				NewRotor2('A', 'A'),
+				NewRotor3('A', 'A'),
+			},
+			NewReflectorB(),
+			NewPlugboard(),
+		)
+	}
+	e1 := newM3()
+	e2 := newM3()
 
 	encoded := e1.EncodeString(s)
 	decoded := e2.EncodeString(encoded)
@@ -147,24 +142,19 @@ func TestM3_pos(t *testing.T) {
 }
 
 func testPos(r1, r2, r3 rune, s string, t *testing.T) {
-	e1 := NewM3(
-		[3]Rotor{
-			NewRotor1(r1, 'A'),
-			NewRotor2(r2, 'A'),
-			NewRotor3(r3, 'A'),
-		},
-		NewReflectorB(),
-		NewPlugboard(),
-	)
-	e2 := NewM3(
-		[3]Rotor{
-			NewRotor1(r1, 'A'),
-			NewRotor2(r2, 'A'),
-			NewRotor3(r3, 'A'),
-		},
-		NewReflectorB(),
-		NewPlugboard(),
-	)
+	newM3 := func() Enigma {
+		return NewM3(
+			[3]Rotor{
+				NewRotor1(r1, 'A'),
+				NewRotor2(r2, 'A'),
+				NewRotor3(r3, 'A'),
+			},
+			NewReflectorB(),
+			NewPlugboard(),
+		)
+	}
+	e1 := newM3()
+	e2 := newM3()
 
 	encoded := e1.EncodeString(s)
 	decoded := e2.EncodeString(encoded)
@@ -193,24 +183,19 @@ func TestM3_ring(t *testing.T) {
 }
 
 func testRing(r1, r2, r3 rune, s string, t *testing.T) {
-	e1 := NewM3(
-		[3]Rotor{
-			NewRotor1('A', r1),
-			NewRotor2('A', r2),
-			NewRotor3('A', r3),
-		},
-		NewReflectorB(),
-		NewPlugboard(),
-	)
-	e2 := NewM3(
-		[3]Rotor{
-			NewRotor1('A', r1),
-			NewRotor2('A', r2),
-			NewRotor3('A', r3),
-		},
-		NewReflectorB(),
-		NewPlugboard(),
-	)
+	newM3 := func() Enigma {
+		return NewM3(
+			[3]Rotor{
+				NewRotor1('A', r1),
+				NewRotor2('A', r2),
+				NewRotor3('A', r3),
+			},
+			NewReflectorB(),
+			NewPlugboard(),
+		)
+	}
+	e1 := newM3()
+	e2 := newM3()
 
 	encoded := e1.EncodeString(s)
 	decoded := e2.EncodeString(encoded)
