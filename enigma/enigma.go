@@ -3,6 +3,8 @@ package enigma
 type Enigma interface {
 	EncodeRune(rune) rune
 	EncodeString(string) string
+
+	RotorPositions() []rune
 }
 
 func NewM3(rotors [3]Rotor, reflector Reflector, plugboard Plugboard) Enigma {
@@ -50,4 +52,12 @@ func (e *M3) EncodeString(s string) string {
 		rs[i] = e.EncodeRune(r)
 	}
 	return string(rs)
+}
+
+func (e *M3) RotorPositions() []rune {
+	return []rune{
+		e.rotors[0].position(),
+		e.rotors[1].position(),
+		e.rotors[2].position(),
+	}
 }

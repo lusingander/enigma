@@ -26,6 +26,8 @@ type Rotor interface {
 	substituteLtoR(idx) idx
 	turnover() bool
 	step()
+
+	position() rune
 }
 
 func NewRotor1(pos, ring rune) Rotor {
@@ -109,6 +111,10 @@ func (w rotor) turnover() bool {
 func (w *rotor) step() {
 	w.pos = mod26(w.pos + 1)
 	w.updateIdxMap()
+}
+
+func (w rotor) position() rune {
+	return toRune(w.pos)
 }
 
 type notchSet map[idx]any
