@@ -1,5 +1,7 @@
-Enigma
-====
+[![Go Reference](https://pkg.go.dev/badge/github.com/lusingander/enigma.svg)](https://pkg.go.dev/github.com/lusingander/enigma)
+![GitHub](https://img.shields.io/github/license/lusingander/enigma)
+
+# Enigma
 
 Terminal [Enigma machine](https://en.wikipedia.org/wiki/Enigma_machine) simulator
 
